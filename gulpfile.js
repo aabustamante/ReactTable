@@ -1,14 +1,11 @@
 var gulp = require('gulp')
-var connect = require('gulp-connect')
-var open = require('gulp-open')
-
-var browserify = require('browserify')
-var reactify = require('reactify')
-var source = require('vinyl-source-stream')
-
-var concat = require('gulp-concat')
-
-var lint = require('gulp-eslint')
+var connect = require('gulp-connect') //Runs a local dev server
+var open = require('gulp-open') // Open a URL in a web browser
+var browserify = require('browserify') // Bundles JS
+var reactify = require('reactify') // Transforms React JSC to JS
+var source = require('vinyl-source-stream') // Use conventional text streams with Gulp
+var concat = require('gulp-concat') // Concatenates files
+var lint = require('gulp-eslint') // List JS files, including JSX
 
 var config = {
   port: 3005,

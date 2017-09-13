@@ -1,4 +1,5 @@
 $ = JQuery = require('jquery')
-var App = console.log('Browserify bla bla bla')
-debugger
-module.exports = App
+var React = require('react')
+var ReactDOM = require('react-dom')
+var EditableTable = require('./components/editableTable')
+ReactDOM.render(<EditableTable />, document.getElementById('app'))
