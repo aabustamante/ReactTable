@@ -20,15 +20,11 @@ class EditableTable extends React.Component {
     this.getFilteredTable = this.getFilteredTable.bind(this);
   }
 
-  handleOnChangeCellData(characterId,key, newValue) {
+  handleOnChangeCellData(characterId, key, newValue) {
     debugger;
     var newCharacters = this.state.characters;
-    newCharacters.map(character => {
-      if(character.id == characterId){
-        character[key] = newValue;
-        return;
-      } 
-    })
+
+    newCharacters.find(character => character.id == characterId)[key] = newValue;
     
     this.setState({characters:newCharacters});
 	}
@@ -62,9 +58,11 @@ class EditableTable extends React.Component {
 		this.setState(state)
   }
 
-  deleteCharacter(characterId) {
+  deleteCharacter(character) {
     const newCharacters = this.state.characters
-    newCharacters.splice(characterId, characterId + 1)
+
+    var index = newCharacters.indexOf(character);
+    newCharacters.splice(index, index + 1)
     this.setState({characters: newCharacters})
   }
 
