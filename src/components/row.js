@@ -1,5 +1,5 @@
 const React = require('react')
-const Cell = require('./Cell')
+const Cell = require('./cell')
 
 var Row = ({data,characterId,event}) => {
     return(
