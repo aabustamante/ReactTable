@@ -20,9 +20,16 @@ class EditableTable extends React.Component {
     this.getFilteredTable = this.getFilteredTable.bind(this);
   }
 
-  handleOnChangeCellData(rowindex,key, newValue) {
+  handleOnChangeCellData(characterId,key, newValue) {
+    debugger;
     var newCharacters = this.state.characters;
-    newCharacters[rowindex][key] = newValue;
+    newCharacters.map(character => {
+      if(character.id == characterId){
+        character[key] = newValue;
+        return;
+      } 
+    })
+    
     this.setState({characters:newCharacters});
 	}
 
@@ -64,6 +71,9 @@ class EditableTable extends React.Component {
   filterMethod(event, value) {
     event.preventDefault();
     this.setState({filterString:value});
+    const newConfig = this.state.config
+    newConfig.actualPage = 1
+    this.setState({config: newConfig});    
   }
 
   getFilteredTable() {
@@ -107,8 +117,9 @@ class EditableTable extends React.Component {
 						</thead>
 						<tbody>
 						{
-							visibleElements.map((character, index) => {
-								return <Row key={index} data={character} characterId={index} columns={options.columns} onDeleteElement={this.deleteCharacter} onChangeCellData={this.handleOnChangeCellData}/>
+							visibleElements.map((character) => {
+                debugger;
+								return <Row key={character.id} data={character} characterId={character.id} columns={options.columns} onDeleteElement={this.deleteCharacter} onChangeCellData={this.handleOnChangeCellData}/>
 							})
 						}
 						</tbody>
