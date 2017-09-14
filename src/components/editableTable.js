@@ -21,17 +21,11 @@ class EditableTable extends React.Component {
 
   sortBy(valor){
 		var state = this.state
-		var order = 1;
-		if (this.state.config.sortedBy == valor) {
-			if (this.state.config.order == options.order.asc) {
-				order = -1
-				state.config.order = options.order.desc
-			} else {
-				order = 1
-				state.config.order = options.order.asc
-			}
+		if (state.config.sortedBy == valor && state.config.order == options.order.asc) {
+			var order = -1
+			state.config.order = options.order.desc
 		} else {
-			order = 1;
+			var order = 1;
 			state.config.order = options.order.asc
 			state.config.sortedBy = valor
 		}
@@ -50,7 +44,7 @@ class EditableTable extends React.Component {
 
   render() {
     return(
-      <table className="table">
+      <table className="table table-striped">
         <thead>
           <tr>
             <th onClick={this.sortByFamily}>House</th>
