@@ -9,9 +9,9 @@ class Filter extends React.Component{
 
     render(){
         return (
-            <form onSubmit={(event) => this.props.filterFunction(event,this.searchString.value)}>
+            <form style={{display:'inline'}} className="pull-right" onSubmit={(event) => this.props.filterFunction(event,this.searchString.value)}>
                 <input type="text" ref={(input) => this.searchString = input}/>
-                <button type="submit">Search</button>
+                <button className="btn btn-primary" type="submit">Search</button>
             </form>
         );
     }

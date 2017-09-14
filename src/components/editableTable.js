@@ -113,9 +113,12 @@ class EditableTable extends React.Component {
 			visibleElements.push(characters[index])
 		}
     return(
-			<div>
-        <Filter filterFunction={this.filterMethod}/>
-        <button className="btn btn-primary" onClick={() => this.onAddElement()} data-toggle="tooltip" title="Add Row">Add Button</button>
+			<div style={{margin:"2em"}}>
+        <span>
+          <button className="btn btn-primary"  onClick={() => this.onAddElement()} data-toggle="tooltip" title="Add Row">Add Button</button>
+        </span>
+        <span><Filter filterFunction={this.filterMethod}/></span>
+        
 				<div>
 					<table className="table table-striped">
 						<thead>
@@ -140,7 +143,10 @@ class EditableTable extends React.Component {
 					<div className="btn-group" role="group">
 						{
 							//TODO: verify if can be avoid value - innerHTML to avoid repetition
-							pagesList.map((page) => <button key={page} onClick={(evt) => {this.handleOnChangePage(evt.target.value)}} className="btn btn-default" value={page}>{page}</button>) 
+							pagesList.map((page) => <button key={page} 
+                                              className={(page == this.state.config.actualPage) ? "btn btn-primary" : "btn btn-default"} 
+                                              onClick={(evt) => {this.handleOnChangePage(evt.target.value)}} 
+                                              value={page}>{page}</button>) 
 						}
 					</div>
 				</div>
