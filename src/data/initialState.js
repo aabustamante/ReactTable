@@ -20,7 +20,9 @@ var initialState = {
 		actualPage: 1,
 		elementsPerPage: 3
 	},
-	filterString:""
+	filterString:"",
+	elementCounter:12
+
 }
 
 module.exports = initialState

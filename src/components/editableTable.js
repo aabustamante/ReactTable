@@ -18,6 +18,7 @@ class EditableTable extends React.Component {
     this.handleOnChangePage = this.handleOnChangePage.bind(this)
     this.filterMethod = this.filterMethod.bind(this);
     this.getFilteredTable = this.getFilteredTable.bind(this);
+    this.onAddElement = this.onAddElement.bind(this);
   }
 
   handleOnChangeCellData(characterId, key, newValue) {
@@ -60,9 +61,9 @@ class EditableTable extends React.Component {
 
   deleteCharacter(character) {
     const newCharacters = this.state.characters
-
+    debugger;
     var index = newCharacters.indexOf(character);
-    newCharacters.splice(index, index + 1)
+    newCharacters.splice(index, 1)
     this.setState({characters: newCharacters})
   }
 
@@ -78,6 +79,17 @@ class EditableTable extends React.Component {
     debugger;
     const value = this.state.filterString.toLowerCase();
     return (value === "") ? this.state.characters : this.state.characters.filter(character => character.house.toLowerCase().includes(value) || character.name.toLowerCase().includes(value) || character.death.toLowerCase().includes(value));
+  }
+
+  onAddElement() {
+    const newCharacters = this.state.characters;
+    var newConfig = this.state.config; 
+    var index = this.state.elementCounter + 1; 
+    newCharacters.push({id:index});
+    newConfig.actualPage = newCharacters.length / this.state.config.elementsPerPage;    
+    this.setState({characters: newCharacters})
+    this.setState({elementCounter: index})
+    this.setState({config: newConfig})
   }
 
   render() {
@@ -103,6 +115,7 @@ class EditableTable extends React.Component {
     return(
 			<div>
         <Filter filterFunction={this.filterMethod}/>
+        <button className="btn btn-primary" onClick={() => this.onAddElement()} data-toggle="tooltip" title="Add Row">Add Button</button>
 				<div>
 					<table className="table table-striped">
 						<thead>
