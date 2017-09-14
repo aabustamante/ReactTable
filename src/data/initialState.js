@@ -12,13 +12,14 @@ var initialState = {
 		{house: "Frey", name: "Walder", death: "Season 7"},
 		{house: "Lannister", name: "Tywin", death: "Season 4"},
 		{house: "Payne", name: "Ilyn Payne", death: "-"},
-		{house: "Trant", name: "Meryn Trant", death: "Season 5"},
+    {house: "Trant", name: "Meryn Trant", death: "Season 5"}
+    
 	],
 	config: {
 		sortedBy: options.columns.house,
 		order: options.order.asc,
 		actualPage: 1,
-		elementsPerPage: 4
+		elementsPerPage: 5
 	}
 }
 

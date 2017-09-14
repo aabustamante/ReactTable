@@ -7,10 +7,12 @@ class EditableTable extends React.Component {
   constructor(props){
     super(props);
     this.state = InitialState
-		this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
+    this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
+    
 		this.sortByFamily = this.sortBy.bind(this, options.columns.house)
 		this.sortByName = this.sortBy.bind(this, options.columns.name)
-		this.sortByDeath = this.sortBy.bind(this, options.columns.death)
+    this.sortByDeath = this.sortBy.bind(this, options.columns.death)
+    
 		this.handleOnChangePage = this.handleOnChangePage.bind(this)
   }
 
@@ -50,16 +52,24 @@ class EditableTable extends React.Component {
   }
 
   render() {
-		//TODO: make prettier
+    //TODO: make prettier
+    const characters = this.state.characters
+
 		const elemPerPage = this.state.config.elementsPerPage
-		const pagesNumber = this.state.characters.length / elemPerPage
-		const pagesList = []
+		const pagesNumber = characters.length / elemPerPage
+    const pagesList = []
+    
 		for (var index = 0; index < pagesNumber; index++) {
 			pagesList.push(index + 1);
-		}
-		const visibleElements = []
-		for (var index = (this.state.config.actualPage * elemPerPage) - elemPerPage; index < this.state.config.actualPage * elemPerPage; index++) {
-			visibleElements.push(this.state.characters[index])
+    }
+    
+    const visibleElements = []
+    const endRange = (this.state.config.actualPage * elemPerPage) > characters.length ? characters.length : this.state.config.actualPage * elemPerPage;
+    const startRange = (this.state.config.actualPage * elemPerPage) - elemPerPage
+
+    debugger
+		for (var index = startRange; index < endRange; index++) {
+			visibleElements.push(characters[index])
 		}
     return(
 			<div>
