@@ -11,13 +11,13 @@ class EditableTable extends React.Component {
     this.state = InitialState
     
     this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
-		this.sortByFamily = this.sortBy.bind(this, options.columns.house)
+		this.sortByHouse = this.sortBy.bind(this, options.columns.house)
 		this.sortByName = this.sortBy.bind(this, options.columns.name)
     this.sortByDeath = this.sortBy.bind(this, options.columns.death)
     this.deleteCharacter = this.deleteCharacter.bind(this)
     this.handleOnChangePage = this.handleOnChangePage.bind(this)
     this.filterMethod = this.filterMethod.bind(this);
-
+    this.getFilteredTable = this.getFilteredTable.bind(this);
   }
 
   handleOnChangeCellData(rowindex,key, newValue) {
@@ -62,15 +62,19 @@ class EditableTable extends React.Component {
   }
 
   filterMethod(event, value) {
-    debugger;
     event.preventDefault();
-    var newCharacters = this.state.characters.filter(character => character.family == value || character.name == value || character.death == value);
-    this.setState({characters:newCharacters});
+    this.setState({filterString:value});
+  }
+
+  getFilteredTable() {
+    debugger;
+    const value = this.state.filterString.toLowerCase();
+    return (value === "") ? this.state.characters : this.state.characters.filter(character => character.house.toLowerCase().includes(value) || character.name.toLowerCase().includes(value) || character.death.toLowerCase().includes(value));
   }
 
   render() {
     //TODO: make prettier
-    const characters = this.state.characters
+    const characters = this.getFilteredTable();
 
 		const elemPerPage = this.state.config.elementsPerPage
 		const pagesNumber = characters.length / elemPerPage
@@ -82,8 +86,8 @@ class EditableTable extends React.Component {
     
     const visibleElements = []
     const posibleEndRange = this.state.config.actualPage * elemPerPage
-    const endRange = posibleEndRange > characters.length ? characters.length : this.state.config.actualPage * elemPerPage;
-    const startRange = (this.state.config.actualPage * elemPerPage) - elemPerPage
+    const endRange = posibleEndRange > characters.length ? characters.length : posibleEndRange;
+    const startRange = posibleEndRange - elemPerPage
 
 		for (var index = startRange; index < endRange; index++) {
 			visibleElements.push(characters[index])
@@ -95,7 +99,7 @@ class EditableTable extends React.Component {
 					<table className="table table-striped">
 						<thead>
 							<tr>
-								<th onClick={this.sortByFamily}>House</th>
+								<th onClick={this.sortByHouse}>House</th>
 								<th onClick={this.sortByName}>Name</th>
 								<th onClick={this.sortByDeath}>Dies in season...</th>
                 <th>Operations</th>
