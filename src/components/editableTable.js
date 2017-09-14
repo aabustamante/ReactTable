@@ -1,17 +1,21 @@
 var React = require('react')
 var Row = require('./Row')
+var Filter = require('./Filter')
 
 class EditableTable extends React.Component {
   constructor(props){
     super(props);
     this.state = {
         characters:[
-          {family:"Lannister", name: "joffrey", death: "Season 4"},
-          {family:"Lannister", name: "Cersei", death: "-"},
-          {family:"clagein", name: "mountain", death: "Season 5"}
-        ]
+          {id:0, family:"Lannister", name: "joffrey", death: "Season 4"},
+          {id:1, family:"Lannister", name: "Cersei", death: "-"},
+          {id:2, family:"clagein", name: "mountain", death: "Season 4"}
+        ],
+        filter:""
     }
     this.onChangeCell = this.onChangeCell.bind(this);
+    this.filterMethod = this.filterMethod.bind(this);
+    
   }
 
   onChangeCell(rowindex,key, newValue) {
@@ -21,22 +25,33 @@ class EditableTable extends React.Component {
     this.setState({characters:newCharacters});
   }
 
+  filterMethod(event, value) {
+    debugger;
+    event.preventDefault();
+    var newCharacters = this.state.characters.filter(character => character.family == value || character.name == value || character.death == value);
+    this.setState({characters:newCharacters});
+  }
+
   render() {
     return(
-      <table className="table">
-        <thead>
-          <tr>
-            <th>family</th>
-            <th>name</th>
-            <th>date of death</th>
-          </tr>
-        </thead>
-        <tbody>
-         <Row data={this.state.characters[0]} characterId={0} event={this.onChangeCell}/>
-         <Row data={this.state.characters[1]} characterId={1} event={this.onChangeCell}/> 
-         <Row data={this.state.characters[2]} characterId={2} event={this.onChangeCell}/>          
-        </tbody>
-      </table>
+      <div>
+        <Filter filterFunction={this.filterMethod}/>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>family</th>
+              <th>name</th>
+              <th>date of death</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.characters.map(character => <Row data={character} characterId={character.id} event={this.onChangeCell}/>)}
+          {/* <Row data={this.state.characters[0]} characterId={0} event={this.onChangeCell}/>
+          <Row data={this.state.characters[1]} characterId={1} event={this.onChangeCell}/> 
+          <Row data={this.state.characters[2]} characterId={2} event={this.onChangeCell}/>           */}
+          </tbody>
+        </table>
+      </div>
     )
   }
 }
