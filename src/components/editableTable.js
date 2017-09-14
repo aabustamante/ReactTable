@@ -11,13 +11,20 @@ class EditableTable extends React.Component {
 		this.sortByFamily = this.sortBy.bind(this, options.columns.house)
 		this.sortByName = this.sortBy.bind(this, options.columns.name)
 		this.sortByDeath = this.sortBy.bind(this, options.columns.death)
+		this.handleOnChangePage = this.handleOnChangePage.bind(this)
   }
 
   handleOnChangeCellData(rowindex,key, newValue) {
     var newCharacters = this.state.characters;
     newCharacters[rowindex][key] = newValue;
     this.setState({characters:newCharacters});
-  }
+	}
+	
+	handleOnChangePage(newSelectedPage) {
+		var newConfig = this.state.config
+		newConfig.actualPage = newSelectedPage
+		this.setState({config: newConfig})
+	}
 
   sortBy(valor){
 		var state = this.state
@@ -43,23 +50,46 @@ class EditableTable extends React.Component {
   }
 
   render() {
+		//TODO: make prettier
+		const elemPerPage = this.state.config.elementsPerPage
+		const pagesNumber = this.state.characters.length / elemPerPage
+		const pagesList = []
+		for (var index = 0; index < pagesNumber; index++) {
+			pagesList.push(index + 1);
+		}
+		const visibleElements = []
+		for (var index = (this.state.config.actualPage * elemPerPage) - elemPerPage; index < this.state.config.actualPage * elemPerPage; index++) {
+			visibleElements.push(this.state.characters[index])
+		}
     return(
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th onClick={this.sortByFamily}>House</th>
-            <th onClick={this.sortByName}>Name</th>
-            <th onClick={this.sortByDeath}>Dies in season...</th>
-          </tr>
-        </thead>
-        <tbody>
-         {
-					 this.state.characters.map((character, index) => {
-						 return <Row key={index} data={character} characterId={index} columns={options.columns} onChangeCellData={this.handleOnChangeCellData}/>
-					 })
-				 }
-        </tbody>
-      </table>
+			<div>
+				<div>
+					<table className="table table-striped">
+						<thead>
+							<tr>
+								<th onClick={this.sortByFamily}>House</th>
+								<th onClick={this.sortByName}>Name</th>
+								<th onClick={this.sortByDeath}>Dies in season...</th>
+							</tr>
+						</thead>
+						<tbody>
+						{
+							visibleElements.map((character, index) => {
+								return <Row key={index} data={character} characterId={index} columns={options.columns} onChangeCellData={this.handleOnChangeCellData}/>
+							})
+						}
+						</tbody>
+					</table>
+				</div>
+				<div>
+					<div className="btn-group" role="group">
+						{
+							//TODO: verify if can be avoid value - innerHTML to avoid repetition
+							pagesList.map((page) => <button key={page} onClick={(evt) => {this.handleOnChangePage(evt.target.value)}} className="btn btn-default" value={page}>{page}</button>) 
+						}
+					</div>
+				</div>
+			</div>
     )
   }
 }

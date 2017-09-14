@@ -16,7 +16,9 @@ var initialState = {
 	],
 	config: {
 		sortedBy: options.columns.house,
-		order: options.order.asc
+		order: options.order.asc,
+		actualPage: 1,
+		elementsPerPage: 4
 	}
 }
 
