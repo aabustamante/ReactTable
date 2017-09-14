@@ -1,41 +1,51 @@
 var React = require('react')
 var Row = require('./row')
+const InitialState = require('../data/initialState')
 
 class EditableTable extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-        characters:[
-          {family:"Aannister", name: "joffrey", death: "Season 4"},
-          {family:"Lannister", name: "Cersei", death: "-"},
-          {family:"clagein", name: "mountain", death: "Season 5"}
-        ]
-    }
-    this.onChangeCell = this.onChangeCell.bind(this);
-    this.sort = this.sort.bind(this)
+    this.state = InitialState
+		this.onChangeCell = this.onChangeCell.bind(this)
+		this.sortByFamily = this.sortBy.bind(this, 'family')
+		this.sortByName = this.sortBy.bind(this, 'name')
+		this.sortByDeath = this.sortBy.bind(this, 'death')
   }
 
   onChangeCell(rowindex,key, newValue) {
-    console.log(this);
     var newCharacters = this.state.characters;
     newCharacters[rowindex][key] = newValue;
     this.setState({characters:newCharacters});
   }
 
-  sort(valor){
-    var newCharacters = this.state.characters
-    newCharacters = newCharacters.sort((a, b) => {
-      debugger
+  sortBy(valor){
+		var state = this.state
+		var order = 1;
+		if (this.state.config.sortedBy == valor) {
+			if (this.state.config.order == "asc") {
+				order = -1
+				state.config.order = "desc"
+			} else {
+				order = 1
+				state.config.order = "asc"
+			}
+		} else {
+			order = 1;
+			state.config.order = "asc"
+			state.config.sortedBy = valor
+		}
+
+    state.characters = state.characters.sort((a, b) => {
       const valueA = a[valor]
       const valueB = b[valor]
       if (valueA.toLowerCase() < valueB.toLowerCase())
-        return -1;
+        return -1 * order;
       if (valueA.toLowerCase() > valueB.toLowerCase())
-        return 1;
+        return 1 * order;
       return 0;
-    })
+		})
     
-    this.setState({characters:newCharacters})
+		this.setState(state)
   }
 
   render() {
@@ -43,15 +53,17 @@ class EditableTable extends React.Component {
       <table className="table">
         <thead>
           <tr>
-            <th onClick={this.sort('family')}>family</th>
-            <th>name</th>
-            <th>date of death</th>
+            <th onClick={this.sortByFamily}>House</th>
+            <th onClick={this.sortByName}>Name</th>
+            <th onClick={this.sortByDeath}>Dies in season...</th>
           </tr>
         </thead>
         <tbody>
-         <Row data={this.state.characters[0]} characterId={0} event={this.onChangeCell}/>
-         <Row data={this.state.characters[1]} characterId={1} event={this.onChangeCell}/>
-         <Row data={this.state.characters[2]} characterId={2} event={this.onChangeCell}/>
+         {
+					 this.state.characters.map((character, index) => {
+						 return <Row key={index} data={character} characterId={index} event={this.onChangeCell}/>
+					 })
+				 }
         </tbody>
       </table>
     )
