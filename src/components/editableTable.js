@@ -7,13 +7,13 @@ class EditableTable extends React.Component {
   constructor(props){
     super(props);
     this.state = InitialState
-    this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
     
+    this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
 		this.sortByFamily = this.sortBy.bind(this, options.columns.house)
 		this.sortByName = this.sortBy.bind(this, options.columns.name)
     this.sortByDeath = this.sortBy.bind(this, options.columns.death)
-    
-		this.handleOnChangePage = this.handleOnChangePage.bind(this)
+    this.deleteCharacter = this.deleteCharacter.bind(this)
+    this.handleOnChangePage = this.handleOnChangePage.bind(this)
   }
 
   handleOnChangeCellData(rowindex,key, newValue) {
@@ -21,7 +21,7 @@ class EditableTable extends React.Component {
     newCharacters[rowindex][key] = newValue;
     this.setState({characters:newCharacters});
 	}
-	
+
 	handleOnChangePage(newSelectedPage) {
 		var newConfig = this.state.config
 		newConfig.actualPage = newSelectedPage
@@ -51,6 +51,12 @@ class EditableTable extends React.Component {
 		this.setState(state)
   }
 
+  deleteCharacter(characterId) {
+    const newCharacters = this.state.characters
+    newCharacters.splice(characterId, characterId + 1)
+    this.setState({characters: newCharacters})
+  }
+
   render() {
     //TODO: make prettier
     const characters = this.state.characters
@@ -64,10 +70,10 @@ class EditableTable extends React.Component {
     }
     
     const visibleElements = []
-    const endRange = (this.state.config.actualPage * elemPerPage) > characters.length ? characters.length : this.state.config.actualPage * elemPerPage;
+    const posibleEndRange = this.state.config.actualPage * elemPerPage
+    const endRange = posibleEndRange > characters.length ? characters.length : this.state.config.actualPage * elemPerPage;
     const startRange = (this.state.config.actualPage * elemPerPage) - elemPerPage
 
-    debugger
 		for (var index = startRange; index < endRange; index++) {
 			visibleElements.push(characters[index])
 		}
@@ -80,12 +86,13 @@ class EditableTable extends React.Component {
 								<th onClick={this.sortByFamily}>House</th>
 								<th onClick={this.sortByName}>Name</th>
 								<th onClick={this.sortByDeath}>Dies in season...</th>
+                <th>Operations</th>
 							</tr>
 						</thead>
 						<tbody>
 						{
 							visibleElements.map((character, index) => {
-								return <Row key={index} data={character} characterId={index} columns={options.columns} onChangeCellData={this.handleOnChangeCellData}/>
+								return <Row key={index} data={character} characterId={index} columns={options.columns} onDeleteElement={this.deleteCharacter} onChangeCellData={this.handleOnChangeCellData}/>
 							})
 						}
 						</tbody>

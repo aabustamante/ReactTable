@@ -2,7 +2,7 @@ var options = {
 	columns: {
 		house: 'house',
 		name: 'name',
-		death: 'death'
+    death: 'death'
 	},
 	order: {
 		asc: 'asc',
