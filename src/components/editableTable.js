@@ -2,6 +2,8 @@ var React = require('react')
 var Row = require('./row')
 const InitialState = require('../data/initialState')
 const options = require('../data/options')
+var Filter = require('./Filter')
+
 
 class EditableTable extends React.Component {
   constructor(props){
@@ -14,6 +16,8 @@ class EditableTable extends React.Component {
     this.sortByDeath = this.sortBy.bind(this, options.columns.death)
     this.deleteCharacter = this.deleteCharacter.bind(this)
     this.handleOnChangePage = this.handleOnChangePage.bind(this)
+    this.filterMethod = this.filterMethod.bind(this);
+
   }
 
   handleOnChangeCellData(rowindex,key, newValue) {
@@ -57,6 +61,13 @@ class EditableTable extends React.Component {
     this.setState({characters: newCharacters})
   }
 
+  filterMethod(event, value) {
+    debugger;
+    event.preventDefault();
+    var newCharacters = this.state.characters.filter(character => character.family == value || character.name == value || character.death == value);
+    this.setState({characters:newCharacters});
+  }
+
   render() {
     //TODO: make prettier
     const characters = this.state.characters
@@ -79,6 +90,7 @@ class EditableTable extends React.Component {
 		}
     return(
 			<div>
+        <Filter filterFunction={this.filterMethod}/>
 				<div>
 					<table className="table table-striped">
 						<thead>
@@ -107,6 +119,7 @@ class EditableTable extends React.Component {
 					</div>
 				</div>
 			</div>
+
     )
   }
 }
