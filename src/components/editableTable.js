@@ -1,18 +1,19 @@
 var React = require('react')
 var Row = require('./row')
 const InitialState = require('../data/initialState')
+const options = require('../data/options')
 
 class EditableTable extends React.Component {
   constructor(props){
     super(props);
     this.state = InitialState
-		this.onChangeCell = this.onChangeCell.bind(this)
-		this.sortByFamily = this.sortBy.bind(this, 'family')
-		this.sortByName = this.sortBy.bind(this, 'name')
-		this.sortByDeath = this.sortBy.bind(this, 'death')
+		this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
+		this.sortByFamily = this.sortBy.bind(this, options.columns.house)
+		this.sortByName = this.sortBy.bind(this, options.columns.name)
+		this.sortByDeath = this.sortBy.bind(this, options.columns.death)
   }
 
-  onChangeCell(rowindex,key, newValue) {
+  handleOnChangeCellData(rowindex,key, newValue) {
     var newCharacters = this.state.characters;
     newCharacters[rowindex][key] = newValue;
     this.setState({characters:newCharacters});
@@ -22,16 +23,16 @@ class EditableTable extends React.Component {
 		var state = this.state
 		var order = 1;
 		if (this.state.config.sortedBy == valor) {
-			if (this.state.config.order == "asc") {
+			if (this.state.config.order == options.order.asc) {
 				order = -1
-				state.config.order = "desc"
+				state.config.order = options.order.desc
 			} else {
 				order = 1
-				state.config.order = "asc"
+				state.config.order = options.order.asc
 			}
 		} else {
 			order = 1;
-			state.config.order = "asc"
+			state.config.order = options.order.asc
 			state.config.sortedBy = valor
 		}
 
@@ -44,7 +45,6 @@ class EditableTable extends React.Component {
         return 1 * order;
       return 0;
 		})
-    
 		this.setState(state)
   }
 
@@ -61,7 +61,7 @@ class EditableTable extends React.Component {
         <tbody>
          {
 					 this.state.characters.map((character, index) => {
-						 return <Row key={index} data={character} characterId={index} event={this.onChangeCell}/>
+						 return <Row key={index} data={character} characterId={index} columns={options.columns} onChangeCellData={this.handleOnChangeCellData}/>
 					 })
 				 }
         </tbody>
