@@ -1,9 +1,9 @@
 var options = {
-	columns: {
-		house: 'house',
-		name: 'name',
-    death: 'death'
-	},
+	columns: [
+    'house',
+    'name',
+    'death'
+  ],
 	order: {
 		asc: 'asc',
 		desc: 'desc'

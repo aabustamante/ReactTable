@@ -1,19 +1,21 @@
 var React = require('react')
 var Row = require('./row')
-const InitialState = require('../data/initialState')
+var DefaultState = require('../data/defaultState')
 const options = require('../data/options')
-var Filter = require('./Filter')
+var Filter = require('./filter')
 
 
 class EditableTable extends React.Component {
   constructor(props){
     super(props);
-    this.state = InitialState
-    
+    const {data, elementsPerPage} = this.props
+    DefaultState.config.elementCounter = DefaultState.characters.length
+    DefaultState.characters = data
+    DefaultState.config.elementsPerPage = elementsPerPage
+
+    this.state = DefaultState
+
     this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
-		this.sortByHouse = this.sortBy.bind(this, options.columns.house)
-		this.sortByName = this.sortBy.bind(this, options.columns.name)
-    this.sortByDeath = this.sortBy.bind(this, options.columns.death)
     this.deleteCharacter = this.deleteCharacter.bind(this)
     this.handleOnChangePage = this.handleOnChangePage.bind(this)
     this.filterMethod = this.filterMethod.bind(this);
@@ -22,7 +24,6 @@ class EditableTable extends React.Component {
   }
 
   handleOnChangeCellData(characterId, key, newValue) {
-    debugger;
     var newCharacters = this.state.characters;
 
     newCharacters.find(character => character.id == characterId)[key] = newValue;
@@ -61,7 +62,6 @@ class EditableTable extends React.Component {
 
   deleteCharacter(character) {
     const newCharacters = this.state.characters
-    debugger;
     var index = newCharacters.indexOf(character);
     newCharacters.splice(index, 1)
     this.setState({characters: newCharacters})
@@ -76,7 +76,6 @@ class EditableTable extends React.Component {
   }
 
   getFilteredTable() {
-    debugger;
     const value = this.state.filterString.toLowerCase();
     return (value === "") ? this.state.characters : this.state.characters.filter(character => character.house.toLowerCase().includes(value) || character.name.toLowerCase().includes(value) || character.death.toLowerCase().includes(value));
   }
@@ -123,16 +122,13 @@ class EditableTable extends React.Component {
 					<table className="table table-striped">
 						<thead>
 							<tr>
-								<th onClick={this.sortByHouse}>House</th>
-								<th onClick={this.sortByName}>Name</th>
-								<th onClick={this.sortByDeath}>Dies in season...</th>
+                {options.columns.map((column, index) => <th key={index} onClick={() => this.sortBy(column)}>{column}</th>)}
                 <th>Operations</th>
 							</tr>
 						</thead>
 						<tbody>
 						{
 							visibleElements.map((character) => {
-                debugger;
 								return <Row key={character.id} data={character} characterId={character.id} columns={options.columns} onDeleteElement={this.deleteCharacter} onChangeCellData={this.handleOnChangeCellData}/>
 							})
 						}
