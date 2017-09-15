@@ -9,26 +9,28 @@ class EditableTable extends React.Component {
   constructor(props){
     super(props);
     const {data, elementsPerPage} = this.props
-    DefaultState.config.elementCounter = DefaultState.characters.length
-    DefaultState.characters = data
+    DefaultState.elementCounter = data.length
+    DefaultState.data = data
     DefaultState.config.elementsPerPage = elementsPerPage
+
+    options.columns = this.props.columns
 
     this.state = DefaultState
 
     this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
-    this.deleteCharacter = this.deleteCharacter.bind(this)
+    this.deletedata = this.deletedata.bind(this)
     this.handleOnChangePage = this.handleOnChangePage.bind(this)
     this.filterMethod = this.filterMethod.bind(this);
     this.getFilteredTable = this.getFilteredTable.bind(this);
     this.onAddElement = this.onAddElement.bind(this);
   }
 
-  handleOnChangeCellData(characterId, key, newValue) {
-    var newCharacters = this.state.characters;
+  handleOnChangeCellData(dataId, key, newValue) {
+    var newdata = this.state.data;
 
-    newCharacters.find(character => character.id == characterId)[key] = newValue;
+    newdata.find(data => data.id == dataId)[key] = newValue;
     
-    this.setState({characters:newCharacters});
+    this.setState({data:newdata});
 	}
 
 	handleOnChangePage(newSelectedPage) {
@@ -48,7 +50,7 @@ class EditableTable extends React.Component {
 			state.config.sortedBy = valor
 		}
 
-    state.characters = state.characters.sort((a, b) => {
+    state.data = state.data.sort((a, b) => {
       const valueA = a[valor]
       const valueB = b[valor]
       if (valueA.toLowerCase() < valueB.toLowerCase())
@@ -60,11 +62,11 @@ class EditableTable extends React.Component {
 		this.setState(state)
   }
 
-  deleteCharacter(character) {
-    const newCharacters = this.state.characters
-    var index = newCharacters.indexOf(character);
-    newCharacters.splice(index, 1)
-    this.setState({characters: newCharacters})
+  deletedata(data) {
+    const newdata = this.state.data
+    var index = newdata.indexOf(data);
+    newdata.splice(index, 1)
+    this.setState({data: newdata})
   }
 
   filterMethod(event, value) {
@@ -77,26 +79,27 @@ class EditableTable extends React.Component {
 
   getFilteredTable() {
     const value = this.state.filterString.toLowerCase();
-    return (value === "") ? this.state.characters : this.state.characters.filter(character => character.house.toLowerCase().includes(value) || character.name.toLowerCase().includes(value) || character.death.toLowerCase().includes(value));
+    return (value === "") ? this.state.data : this.state.data.filter(data => data.house.toLowerCase().includes(value) || data.name.toLowerCase().includes(value) || data.death.toLowerCase().includes(value));
   }
 
   onAddElement() {
-    const newCharacters = this.state.characters;
+    debugger
+    const newdata = this.state.data;
     var newConfig = this.state.config; 
     var index = this.state.elementCounter + 1; 
-    newCharacters.push({id:index});
-    newConfig.actualPage = newCharacters.length / this.state.config.elementsPerPage;    
-    this.setState({characters: newCharacters})
+    newdata.push({id:index});
+    newConfig.actualPage = newdata.length / this.state.config.elementsPerPage;    
+    this.setState({data: newdata})
     this.setState({elementCounter: index})
     this.setState({config: newConfig})
   }
 
   render() {
     //TODO: make prettier
-    const characters = this.getFilteredTable();
+    const data = this.getFilteredTable();
 
 		const elemPerPage = this.state.config.elementsPerPage
-		const pagesNumber = characters.length / elemPerPage
+		const pagesNumber = data.length / elemPerPage
     const pagesList = []
     
 		for (var index = 0; index < pagesNumber; index++) {
@@ -105,16 +108,16 @@ class EditableTable extends React.Component {
     
     const visibleElements = []
     const posibleEndRange = this.state.config.actualPage * elemPerPage
-    const endRange = posibleEndRange > characters.length ? characters.length : posibleEndRange;
+    const endRange = posibleEndRange > data.length ? data.length : posibleEndRange;
     const startRange = posibleEndRange - elemPerPage
 
 		for (var index = startRange; index < endRange; index++) {
-			visibleElements.push(characters[index])
+			visibleElements.push(data[index])
 		}
     return(
 			<div style={{margin:"2em"}}>
         <span>
-          <button className="btn btn-primary"  onClick={() => this.onAddElement()} data-toggle="tooltip" title="Add Row">Add Button</button>
+          <button className="btn btn-primary"  onClick={() => this.onAddElement()} data-toggle="tooltip" title="Add Row">Add row</button>
         </span>
         <span><Filter filterFunction={this.filterMethod}/></span>
         
@@ -128,8 +131,8 @@ class EditableTable extends React.Component {
 						</thead>
 						<tbody>
 						{
-							visibleElements.map((character) => {
-								return <Row key={character.id} data={character} characterId={character.id} columns={options.columns} onDeleteElement={this.deleteCharacter} onChangeCellData={this.handleOnChangeCellData}/>
+							visibleElements.map((data) => {
+								return <Row key={data.id} data={data} dataId={data.id} columns={options.columns} onDeleteElement={this.deletedata} onChangeCellData={this.handleOnChangeCellData}/>
 							})
 						}
 						</tbody>

@@ -1,4 +1,4 @@
-const data = [
+const Data = [
   {id:1, house: "-", name: "Rorge", death: "Season 4"},
   {id:2, house: "-", name: "Thoros of Myr", death: "Season 7"},
   {id:3, house: "-", name: "Poliver", death: "Season 2"},
@@ -11,6 +11,15 @@ const data = [
   {id:10, house: "Lannister", name: "Tywin", death: "Season 4"},
   {id:11, house: "Payne", name: "Ilyn Payne", death: "-"},
   {id:12, house: "Trant", name: "Meryn Trant", death: "Season 5"}
+  // {id:1, name:'bulbasaur', type:'grass'},
+  // {id:2, name:'Ivysaur', type:'grass'},
+  // {id:3, name:'Venasaur', type:'grass'}
 ]
 
-module.exports = data
+var Columns = [
+  'house',
+  'name',
+  'death'
+]
+
+module.exports = {Data, Columns}

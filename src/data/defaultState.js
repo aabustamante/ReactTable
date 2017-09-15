@@ -1,13 +1,14 @@
 var options = require('./options')
 var initialState = {
-	characters:[],
+	data:[],
 	config: {
 		sortedBy: '',
 		order: '',
 		actualPage: 1,
 		elementsPerPage: 3
 	},
-	filterString:""
+  filterString:"",
+  elementCounter:13
 }
 
 module.exports = initialState
