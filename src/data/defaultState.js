@@ -3,12 +3,11 @@ var initialState = {
 	data:[],
 	config: {
 		sortedBy: '',
-		order: '',
+		order: 'asc',
 		actualPage: 1,
-		elementsPerPage: 3
 	},
-  filterString:"",
-  elementCounter:13
+	filterString:"",
+	searchString:""
 }
 
 module.exports = initialState
