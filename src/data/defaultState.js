@@ -1,4 +1,3 @@
-var options = require('./options')
 var initialState = {
 	data:[],
 	config: {
@@ -6,8 +5,7 @@ var initialState = {
 		order: 'asc',
 		actualPage: 1,
 	},
-	filterString:"",
-	searchString:""
+	filterString:""
 }
 
 module.exports = initialState

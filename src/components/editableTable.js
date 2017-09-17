@@ -8,17 +8,23 @@ var Filter = require('./filter')
 class EditableTable extends React.Component {
   constructor(props){
 		super(props);
-    this.state = DefaultState
-    this.state.data = this.props.data
+		this.state = DefaultState
+		// TODO fix this state handling a possible use
+		// A - Callbacks
+		// B - Redux
+		this.state.data = this.props.data
+		
     this.state.elementCounter = DefaultState.data.length
 		this.state.filteredData = this.state.data
 
+		//TODO Why do we need to bind 'this' to these functions
+		//TODO Why 'this' is undefined we dont bind 'this' here
     this.handleOnChangeCellData = this.handleOnChangeCellData.bind(this)
     this.deletedata = this.deletedata.bind(this)
     this.handleOnChangePage = this.handleOnChangePage.bind(this)
-    this.filterMethod = this.filterMethod.bind(this);
-    this.getFilteredTable = this.getFilteredTable.bind(this);
-    this.onAddElement = this.onAddElement.bind(this);
+    this.filterMethod = this.filterMethod.bind(this)
+    this.getFilteredTable = this.getFilteredTable.bind(this)
+    this.onAddElement = this.onAddElement.bind(this)
   }
 
   handleOnChangeCellData(dataId, key, newValue) {
@@ -98,7 +104,6 @@ class EditableTable extends React.Component {
   }
 
   render() {
-    //TODO: make prettier
     const data = this.state.filteredData;
 		const elemPerPage = this.props.elementsPerPage
 		const pagesNumber = data.length / elemPerPage
@@ -120,6 +125,8 @@ class EditableTable extends React.Component {
 			<div className="editableTable">
 
         <div className="row">
+					{/* <Filter onClick={this.onAddElement}/> */}
+
 					<div className="col-md-6">
 						<button className="btn btn-primary"  onClick={() => this.onAddElement()} data-toggle="tooltip" title="Add Row">Add row</button>
 					</div>
@@ -131,6 +138,7 @@ class EditableTable extends React.Component {
 							</span>
 						</div>
 					</div>
+
 				</div>
         
 				<div className="row">
