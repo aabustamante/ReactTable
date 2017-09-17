@@ -125,20 +125,13 @@ class EditableTable extends React.Component {
 			<div className="editableTable">
 
         <div className="row">
-					{/* <Filter onClick={this.onAddElement}/> */}
 
 					<div className="col-md-6">
 						<button className="btn btn-primary"  onClick={() => this.onAddElement()} data-toggle="tooltip" title="Add Row">Add row</button>
 					</div>
-					<div className="col-md-6">
-						<div className="input-group">
-							<input type="text" className="form-control" onChange={(evt) => this.setState({filterString: evt.target.value})} onKeyUp={(event) => { return (event.keyCode === 13) ? this.filterMethod(this.state.filterString):'' }}/>
-							<span className="input-group-btn">
-								<button className="btn btn-primary" onClick={() => this.filterMethod(this.state.filterString)}>Search</button>
-							</span>
-						</div>
-					</div>
-
+					<Filter 
+						onChangeFilterInput={(value) => this.setState({filterString: value})} 
+						filterMethod={() => this.filterMethod(this.state.filterString)}/>
 				</div>
         
 				<div className="row">
